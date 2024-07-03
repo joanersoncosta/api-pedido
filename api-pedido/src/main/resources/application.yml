@@ -1,3 +1,11 @@
+server:
+ servlet:
+  context-path: /api
+ 
+logging:
+ level:
+  com.github.joanersoncosta.apipedido: ${LOG_LEVEL:DEBUG} 
+
 spring:
  application:
   name: api-pedido
