@@ -19,6 +19,7 @@ public class PedidoApplicationService implements PedidoService {
 	@Override
 	public PedidoResponse enfileiraPedido(PedidoRequest pedidoRequest) {
 		log.debug("[start] PedidoApplicationService - enfileiraPedido");
+
 		Pedido pedido = new Pedido(pedidoRequest);
 		publicador.enviarMensagem(pedido);
 		log.debug("[finish] PedidoApplicationService - enfileiraPedido");

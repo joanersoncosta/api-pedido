@@ -1,4 +1,4 @@
-package com.github.joanersoncosta.apipedido.produto.domain;
+package com.github.joanersoncosta.apipedido.produto.application.api.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

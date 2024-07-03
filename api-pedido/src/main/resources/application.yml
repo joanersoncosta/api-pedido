@@ -1,7 +1,7 @@
 server:
  servlet:
   context-path: /api
- 
+ port: 8082
 logging:
  level:
   com.github.joanersoncosta.apipedido: ${LOG_LEVEL:DEBUG} 
@@ -15,6 +15,17 @@ spring:
     username: rabbitmq
     password: rabbitmq
 
+ datasource:
+  url: jdbc:postgresql://localhost:5432/api_pedido
+  driver-class-name: org.postgresql.Driver
+  username: postgres
+  password: admin
+
+ jpa:
+  show-sql: true
+  hibernate: 
+   ddl-auto: update
+   
 #SPRINGDOC OPENAPI
 springdoc:
  swagger-ui:
