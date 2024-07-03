@@ -22,6 +22,7 @@ public class Pedido {
 	private LocalDateTime dataHora;
 
 	public Pedido(PedidoRequest pedidoRequest, Produto produto) {
+		this.idPedido =  pedidoRequest.idPedido();
 		this.emailNotificacao = pedidoRequest.emailNotificacao();
 		this.produto = new PedidoProduto(produto);
 		this.quantidade = pedidoRequest.quantidade();

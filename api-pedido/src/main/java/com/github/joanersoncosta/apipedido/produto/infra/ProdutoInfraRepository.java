@@ -2,6 +2,7 @@ package com.github.joanersoncosta.apipedido.produto.infra;
 
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
 import com.github.joanersoncosta.apipedido.handler.APIException;
@@ -19,28 +20,28 @@ public class ProdutoInfraRepository implements ProdutoRepository {
 	
 	@Override
 	public Produto salva(Produto produto) {
-		log.info("[init] UsuarioRepositoryJpaDB - salva");
+		log.debug("[init] UsuarioRepositoryJpaDB - salva");
 		produtoExistente(produto);
 		Produto NovoProduto = produtoJpaSpringRepository.save(produto);
-		log.info("[finish] UsuarioRepositoryJpaDB - salva");
+		log.debug("[finish] UsuarioRepositoryJpaDB - salva");
 		return NovoProduto;
 	}
 
 	private void produtoExistente(Produto produto) {
-		log.info("[init] UsuarioRepositoryJpaDB - produtoExistente");
+		log.debug("[init] UsuarioRepositoryJpaDB - produtoExistente");
 		produtoJpaSpringRepository.findByNome(produto.getNome())
 			.ifPresent(p -> {
-				throw APIException.build(null, "Este Produto já existe.");
+				throw APIException.build(HttpStatus.BAD_REQUEST, "Este Produto já existe.");
 			});
-		log.info("[finish] UsuarioRepositoryJpaDB - produtoExistente");
+		log.debug("[finish] UsuarioRepositoryJpaDB - produtoExistente");
 	}
 
 	@Override
 	public Produto buscaProdutoPorId(UUID idProduto) {
-		log.info("[init] UsuarioRepositoryJpaDB - buscaProdutoPorId");
+		log.debug("[init] UsuarioRepositoryJpaDB - buscaProdutoPorId");
 		Produto produto = produtoJpaSpringRepository.findById(idProduto)
-				.orElseThrow(() -> APIException.build(null, "Este Produto já existe."));
-		log.info("[finish] UsuarioRepositoryJpaDB - buscaProdutoPorId");
+				.orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Este Produto já existe."));
+		log.debug("[finish] UsuarioRepositoryJpaDB - buscaProdutoPorId");
 		return produto;
 	}
 }
