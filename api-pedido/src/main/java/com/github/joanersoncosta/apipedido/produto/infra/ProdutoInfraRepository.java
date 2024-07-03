@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
 
+import com.github.joanersoncosta.apipedido.handler.APIException;
 import com.github.joanersoncosta.apipedido.produto.application.repository.ProdutoRepository;
 import com.github.joanersoncosta.apipedido.produto.domain.Produto;
 
@@ -29,7 +30,7 @@ public class ProdutoInfraRepository implements ProdutoRepository {
 		log.info("[init] UsuarioRepositoryJpaDB - produtoExistente");
 		produtoJpaSpringRepository.findByNome(produto.getNome())
 			.ifPresent(p -> {
-				throw new RuntimeException("Este produto já existe");
+				throw APIException.build(null, "Este Produto já existe.");
 			});
 		log.info("[finish] UsuarioRepositoryJpaDB - produtoExistente");
 	}
@@ -38,7 +39,7 @@ public class ProdutoInfraRepository implements ProdutoRepository {
 	public Produto buscaProdutoPorId(UUID idProduto) {
 		log.info("[init] UsuarioRepositoryJpaDB - buscaProdutoPorId");
 		Produto produto = produtoJpaSpringRepository.findById(idProduto)
-				.orElseThrow();
+				.orElseThrow(() -> APIException.build(null, "Este Produto já existe."));
 		log.info("[finish] UsuarioRepositoryJpaDB - buscaProdutoPorId");
 		return produto;
 	}
