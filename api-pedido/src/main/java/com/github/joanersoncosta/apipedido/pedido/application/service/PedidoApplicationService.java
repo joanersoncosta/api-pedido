@@ -6,6 +6,8 @@ import com.github.joanersoncosta.apipedido.pedido.PedidoRabbitAMQPublicador;
 import com.github.joanersoncosta.apipedido.pedido.application.api.request.PedidoRequest;
 import com.github.joanersoncosta.apipedido.pedido.application.api.response.PedidoResponse;
 import com.github.joanersoncosta.apipedido.pedido.domain.Pedido;
+import com.github.joanersoncosta.apipedido.produto.application.repository.ProdutoRepository;
+import com.github.joanersoncosta.apipedido.produto.domain.Produto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -15,12 +17,13 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class PedidoApplicationService implements PedidoService {
 	private final PedidoRabbitAMQPublicador publicador;
+	private final ProdutoRepository produtoRepository;
 	
 	@Override
 	public PedidoResponse enfileiraPedido(PedidoRequest pedidoRequest) {
 		log.debug("[start] PedidoApplicationService - enfileiraPedido");
-
-		Pedido pedido = new Pedido(pedidoRequest);
+		Produto produto = produtoRepository.buscaProdutoPorId(pedidoRequest.idProduto());
+		Pedido pedido = new Pedido(pedidoRequest, produto);
 		publicador.enviarMensagem(pedido);
 		log.debug("[finish] PedidoApplicationService - enfileiraPedido");
 		return new PedidoResponse(pedido);

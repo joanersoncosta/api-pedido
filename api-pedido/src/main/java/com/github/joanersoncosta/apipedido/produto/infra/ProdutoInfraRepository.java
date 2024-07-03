@@ -1,5 +1,7 @@
 package com.github.joanersoncosta.apipedido.produto.infra;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Repository;
 
 import com.github.joanersoncosta.apipedido.produto.application.repository.ProdutoRepository;
@@ -17,8 +19,27 @@ public class ProdutoInfraRepository implements ProdutoRepository {
 	@Override
 	public Produto salva(Produto produto) {
 		log.info("[init] UsuarioRepositoryJpaDB - salva");
+		produtoExistente(produto);
 		Produto NovoProduto = produtoJpaSpringRepository.save(produto);
 		log.info("[finish] UsuarioRepositoryJpaDB - salva");
 		return NovoProduto;
+	}
+
+	private void produtoExistente(Produto produto) {
+		log.info("[init] UsuarioRepositoryJpaDB - produtoExistente");
+		produtoJpaSpringRepository.findByNome(produto.getNome())
+			.ifPresent(p -> {
+				throw new RuntimeException("Este produto já existe");
+			});
+		log.info("[finish] UsuarioRepositoryJpaDB - produtoExistente");
+	}
+
+	@Override
+	public Produto buscaProdutoPorId(UUID idProduto) {
+		log.info("[init] UsuarioRepositoryJpaDB - buscaProdutoPorId");
+		Produto produto = produtoJpaSpringRepository.findById(idProduto)
+				.orElseThrow();
+		log.info("[finish] UsuarioRepositoryJpaDB - buscaProdutoPorId");
+		return produto;
 	}
 }

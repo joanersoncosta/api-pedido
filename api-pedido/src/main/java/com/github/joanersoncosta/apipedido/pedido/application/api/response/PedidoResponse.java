@@ -2,6 +2,7 @@ package com.github.joanersoncosta.apipedido.pedido.application.api.response;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.github.joanersoncosta.apipedido.pedido.domain.Pedido;
 import com.github.joanersoncosta.apipedido.pedido.domain.PedidoProduto;
 import com.github.joanersoncosta.apipedido.pedido.domain.enuns.StatusPedido;
@@ -16,6 +17,7 @@ public class PedidoResponse {
 	private PedidoProduto produto;
 	private Integer quantidade;
 	private StatusPedido status;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime dataHora;
 	
 	public PedidoResponse(Pedido pedido) {
