@@ -1,7 +1,7 @@
 server:
  servlet:
   context-path: /api
- port: 8082
+ port: 8080
 logging:
  level:
   com.github.joanersoncosta.apipedido: ${LOG_LEVEL:DEBUG} 
