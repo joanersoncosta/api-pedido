@@ -16,7 +16,7 @@ public class Pedido {
 	
 	private UUID idPedido;
 	private String emailNotificacao;
-	private PedidoProduto produto;
+	private Produto produto;
 	private Integer quantidade;
 	private StatusPedido status;
 	private LocalDateTime dataHora;
@@ -24,7 +24,7 @@ public class Pedido {
 	public Pedido(PedidoRequest pedidoRequest, Produto produto) {
 		this.idPedido =  pedidoRequest.idPedido();
 		this.emailNotificacao = pedidoRequest.emailNotificacao();
-		this.produto = new PedidoProduto(produto);
+		this.produto = produto;
 		this.quantidade = pedidoRequest.quantidade();
 		this.status = StatusPedido.EM_PROCESSAMENTO;
 		this.dataHora = LocalDateTime.now();

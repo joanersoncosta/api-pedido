@@ -1,14 +1,25 @@
 package com.github.joanersoncosta.apiprocessador.pedido.domain;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-import com.github.joanersoncosta.apiprocessador.pedido.domain.enuns.StatusPedido;
-import com.github.joanersoncosta.apiprocessador.produto.domain.Produto;
+import org.springframework.http.HttpStatus;
 
+import com.github.joanersoncosta.apiprocessador.handler.APIException;
+import com.github.joanersoncosta.apiprocessador.itempedido.domain.ItemPedido;
+import com.github.joanersoncosta.apiprocessador.itempedido.domain.PedidoRequest;
+import com.github.joanersoncosta.apiprocessador.pedido.domain.enuns.StatusPedido;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -21,18 +32,45 @@ import lombok.ToString;
 @Entity
 @Table(name = "pedido")
 public class Pedido {
+	@Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(columnDefinition = "uuid", updatable = false, unique = true, nullable = false)
 	private UUID idPedido;
 	private String emailNotificacao;
-	private Produto produto;
-	private Integer quantidade;
+	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ItemPedido> itens;
 	@Enumerated(EnumType.STRING)
 	private StatusPedido status;
 	private LocalDateTime dataHora;
+	private BigDecimal total;
 	
-	public UUID getIdProduto() {
-		return produto.getIdProduto();
+	public Pedido(PedidoRequest pedidoRequest) {
+		this.idPedido = pedidoRequest.getIdPedido();
+		this.emailNotificacao = pedidoRequest.getEmailNotificacao();
+		this.itens = new ArrayList<>();
+		this.status = pedidoRequest.getStatus();
+		this.total = BigDecimal.ZERO;
+		this.dataHora = pedidoRequest.getDataHora();
+	}
+	
+	public void recebeItem(ItemPedido itemPedido) {
+		itens.add(itemPedido);
 	}
 
-	public Pedido(Produto produto2) {
+	private void ataulizaStatus() {
+		validaStatus();
+		if(this.status.equals(StatusPedido.EM_PROCESSAMENTO)) {
+			fechaPedido();
+		}
+	}
+
+	private void validaStatus() {
+		if(this.status.equals(StatusPedido.PROCESSADO)) {
+			throw APIException.build(HttpStatus.BAD_REQUEST, "Este pedido já foi finalizado.");
+		}
+	}
+
+	private StatusPedido fechaPedido() {
+		return this.status = StatusPedido.PROCESSADO;
 	}
 }

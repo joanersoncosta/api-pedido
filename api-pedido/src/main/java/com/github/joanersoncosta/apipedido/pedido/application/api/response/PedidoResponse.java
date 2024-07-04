@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.github.joanersoncosta.apipedido.pedido.domain.Pedido;
-import com.github.joanersoncosta.apipedido.pedido.domain.PedidoProduto;
 import com.github.joanersoncosta.apipedido.pedido.domain.enuns.StatusPedido;
+import com.github.joanersoncosta.apipedido.produto.domain.Produto;
 
 import lombok.Getter;
 import lombok.ToString;
@@ -14,7 +14,7 @@ import lombok.ToString;
 @ToString
 public class PedidoResponse {
 	private String emailNotificacao;
-	private PedidoProduto produto;
+	private Produto produto;
 	private Integer quantidade;
 	private StatusPedido status;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
