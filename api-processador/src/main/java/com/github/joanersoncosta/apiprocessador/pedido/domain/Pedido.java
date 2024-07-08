@@ -73,4 +73,11 @@ public class Pedido {
 	private StatusPedido fechaPedido() {
 		return this.status = StatusPedido.PROCESSADO;
 	}
+	
+	public Double getTotalValor() {
+		Double total = itens.stream()
+		.map(item -> item.getSubTotal())
+		.reduce(null, null);
+		return total;
+	}
 }

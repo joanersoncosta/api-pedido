@@ -42,4 +42,8 @@ public class ItemPedido {
 		this.pedido = pedido;
 		this.quantidade = pedidoRequest.getQuantidade();
 	}
+	
+	public double getSubTotal() {
+		return produto.getValor() * quantidade;
+	}
 }
