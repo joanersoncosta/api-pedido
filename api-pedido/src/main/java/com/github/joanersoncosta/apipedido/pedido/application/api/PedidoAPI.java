@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.joanersoncosta.apipedido.pedido.application.api.request.PedidoRequest;
+import com.github.joanersoncosta.apipedido.pedido.application.api.request.PedidoNovoRequest;
 import com.github.joanersoncosta.apipedido.pedido.application.api.response.PedidoResponse;
-import com.github.joanersoncosta.apipedido.pedido.domain.Pedido;
+import com.github.joanersoncosta.apipedido.pedido.domain.PedidoRequest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -25,8 +25,8 @@ public interface PedidoAPI {
 
 	@Operation(summary = "Cria novo pedido", description = "Contém as operações para criar um novo pedido",
 			responses = @ApiResponse(responseCode = "201", description = "Recurso criado com sucesso",
-			content = @Content(mediaType = "application.json", schema = @Schema(implementation = Pedido.class))))
+			content = @Content(mediaType = "application.json", schema = @Schema(implementation = PedidoRequest.class))))
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	PedidoResponse criaPedido(@RequestBody @Validated PedidoRequest pedidoRequest);
+	PedidoResponse criaPedido(@RequestBody @Validated PedidoNovoRequest pedidoRequest);
 }

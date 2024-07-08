@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.joanersoncosta.apipedido.pedido.application.api.response.PedidoResponse;
-import com.github.joanersoncosta.apipedido.pedido.domain.Pedido;
+import com.github.joanersoncosta.apipedido.pedido.domain.PedidoRequest;
 import com.github.joanersoncosta.apipedido.produto.application.api.request.ProdutoRequest;
 import com.github.joanersoncosta.apipedido.produto.application.api.response.ProdutoResponse;
 
@@ -26,7 +26,7 @@ public interface ProdutoAPI {
 
 	@Operation(summary = "Cria novo produto", description = "Contém as operações para criar um novo produto",
 			responses = @ApiResponse(responseCode = "201", description = "Recurso criado com sucesso",
-			content = @Content(mediaType = "application.json", schema = @Schema(implementation = Pedido.class))))
+			content = @Content(mediaType = "application.json", schema = @Schema(implementation = PedidoRequest.class))))
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
 	ProdutoResponse criaProduto(@RequestBody @Validated ProdutoRequest pedidoRequest);
