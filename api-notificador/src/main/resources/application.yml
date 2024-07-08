@@ -1,1 +1,33 @@
-spring.application.name=api-notificador
+server:
+ port: 8080
+ 
+logging:
+ level:
+  com.github.joanersoncosta.apinotificador: ${LOG_LEVEL:DEBUG}
+  
+spring:
+ application:
+  name: notificador
+ rabbitmq:
+    host: localhost
+    port: 5672
+    username: rabbitmq
+    password: rabbitmq
+    
+ mail:
+  host: localhost
+  port: 1025
+  properties:
+   mail:
+    sntp:
+     aut: false
+     starttls:
+      enable: false
+      requires: false
+
+#RABBITMQ COSTOM CONFIG
+rabbitmq:
+ exchange:
+  name: pedidos.v1.pedido-criado
+ queues:
+  name: pedidos.v1.pedido-criado.gerar-notificacao
