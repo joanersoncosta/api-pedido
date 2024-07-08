@@ -13,7 +13,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -30,10 +29,11 @@ public class ItemPedido {
     @GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(columnDefinition = "uuid", updatable = false, unique = true, nullable = false)
 	private UUID idItemPedido;
-	@OneToMany
+	@ManyToOne
+	@JoinColumn(name = "id_Produto")
 	private Produto produto;
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "idPedido")
+	@JoinColumn(name = "id_Pedido")
 	private Pedido pedido;
 	private Integer quantidade;
 	

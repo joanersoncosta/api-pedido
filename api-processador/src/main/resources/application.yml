@@ -26,11 +26,11 @@ spring:
    ddl-auto: update
   properties:
     hibernate:
-      dialect: org.hibernate.dialect.PostgreSQLDialect 
+      dialect: org.hibernate.dialect.PostgreSQLDialect  
       
 #RABBITMQ COSTOM CONFIG
 rabbitmq:
  exchange:
   name: pedidos.v1.pedido-criado
- queues:
+ queue:
   name: pedidos.v1.pedido-criado.gerar-processamento   

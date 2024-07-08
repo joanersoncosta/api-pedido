@@ -15,12 +15,15 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 @Configuration
 public class RabbitMQConfig {
 
-	@Value("${rabbit.exchange.name}")
+	@Value("${rabbitmq.exchange.name}")
 	private String exchangeName;
-	@Value("${rabbit.queue.name}")
+	@Value("${rabbitmq.queue.name}")
 	private String queueName;
 	
 	@Bean
@@ -59,4 +62,11 @@ public class RabbitMQConfig {
 	public ApplicationListener<ApplicationReadyEvent> applicationReadyEventListener(RabbitAdmin rabbitAdmin){
 		return event -> rabbitAdmin.initialize();
 	}
+	
+    @Bean
+    public ObjectMapper objectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        return mapper;
+    }
 }
