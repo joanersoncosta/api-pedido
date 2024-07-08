@@ -43,7 +43,7 @@ public class Pedido {
 	private StatusPedido status;
 	private LocalDateTime dataHora;
 	private BigDecimal total;
-	
+
 	public Pedido(PedidoRequest pedidoRequest) {
 		this.idPedido = pedidoRequest.getIdPedido();
 		this.emailNotificacao = pedidoRequest.getEmailNotificacao();
@@ -52,20 +52,20 @@ public class Pedido {
 		this.total = BigDecimal.ZERO;
 		this.dataHora = pedidoRequest.getDataHora();
 	}
-	
+
 	public void recebeItem(ItemPedido itemPedido) {
 		itens.add(itemPedido);
 	}
 
 	private void ataulizaStatus() {
 		validaStatus();
-		if(this.status.equals(StatusPedido.EM_PROCESSAMENTO)) {
+		if (this.status.equals(StatusPedido.EM_PROCESSAMENTO)) {
 			fechaPedido();
 		}
 	}
 
 	private void validaStatus() {
-		if(this.status.equals(StatusPedido.PROCESSADO)) {
+		if (this.status.equals(StatusPedido.PROCESSADO)) {
 			throw APIException.build(HttpStatus.BAD_REQUEST, "Este pedido já foi finalizado.");
 		}
 	}
@@ -73,11 +73,11 @@ public class Pedido {
 	private StatusPedido fechaPedido() {
 		return this.status = StatusPedido.PROCESSADO;
 	}
-	
+
 	public Double getTotalValor() {
 		Double total = itens.stream()
-		.map(item -> item.getSubTotal())
-		.reduce(null, null);
+				.map(item -> item.getSubTotal())
+				.reduce(0.0, (subtotal1, subtotal2) -> subtotal1 + subtotal2);
 		return total;
 	}
 }
