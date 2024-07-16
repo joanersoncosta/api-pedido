@@ -1,5 +1,7 @@
 package com.github.joanersoncosta.apipedido.produto.domain;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.UUID;
 
 import com.github.joanersoncosta.apipedido.produto.application.api.request.ProdutoRequest;
@@ -26,10 +28,16 @@ public class Produto {
 	@Column(columnDefinition = "uuid", updatable = false, unique = true, nullable = false)
 	private UUID idProduto;
 	private String nome;
-	private Double valor;
+	private BigDecimal preco;
 	
 	public Produto(ProdutoRequest produto) {
 		this.nome = produto.nome();
-		this.valor = produto.valor();
+		this.preco = getValorArredondado(produto);
+	}
+
+	private BigDecimal getValorArredondado(ProdutoRequest produto) {
+		var valor = BigDecimal.valueOf(produto.valor());
+		valor = valor.setScale(2, RoundingMode.HALF_UP);
+		return valor;
 	}
 }

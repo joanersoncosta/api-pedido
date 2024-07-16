@@ -8,6 +8,9 @@ import com.github.joanersoncosta.apiprocessador.itempedido.domain.PedidoRequest;
 import com.github.joanersoncosta.apiprocessador.notificacao.infra.NoticacaoPublicador;
 import com.github.joanersoncosta.apiprocessador.pedido.application.repository.PedidoRepository;
 import com.github.joanersoncosta.apiprocessador.pedido.domain.Pedido;
+import com.github.joanersoncosta.apiprocessador.pedido.domain.PedidoNotificacaoRequest;
+import com.github.joanersoncosta.apiprocessador.produto.application.service.ProdutoService;
+import com.github.joanersoncosta.apiprocessador.produto.domain.Produto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -18,16 +21,18 @@ import lombok.extern.log4j.Log4j2;
 public class PedidoApplicationService implements PedidoService {
 	private final PedidoRepository pedidoRepository;
 	private final ItemPedidoService itemPedidoService;
+	private final ProdutoService produtoService;
 	private final NoticacaoPublicador noticacaoPublicador;
 
 	@Override
 	public void atualizaPedido(PedidoRequest pedidoRequest) {
 		log.debug("[start] PedidoApplicationService - atualizaPedido");
+		Produto produto = produtoService.buscaProdutoPorId(pedidoRequest.getIdProduto());
 		Pedido pedido = detalhaPedido(pedidoRequest);
-		ItemPedido itemPedido = itemPedidoService.salva(new ItemPedido(pedidoRequest, pedido));
+		ItemPedido itemPedido = itemPedidoService.salva(new ItemPedido(pedidoRequest, pedido, produto));
 		pedido.recebeItem(itemPedido);
 		pedidoRepository.salva(pedido);
-		noticacaoPublicador.enviarMensagem(gerarMensagemPedido(pedido));
+		noticacaoPublicador.enviarMensagem(new PedidoNotificacaoRequest(pedido));
 		log.debug("[finish] PedidoApplicationService - atualizaPedido");
 	}
 
@@ -41,13 +46,5 @@ public class PedidoApplicationService implements PedidoService {
 		});
 		log.debug("[finish] PedidoApplicationService - detalhaPedido");
 		return pedido;
-	}
-	
-	private String gerarMensagemPedido(Pedido pedido) {
-		String idPedido = pedido.getItens().toString();
-		String valor = String.valueOf(pedido.getTotalValor());
-		String status = pedido.getStatus().name();
-		String mensage = String.format("Olá, seu pedido de nº %s no valor de $R %s, foi processado com sucesso./nStatus: %s", idPedido, valor, status);
-		return mensage;
 	}
 }

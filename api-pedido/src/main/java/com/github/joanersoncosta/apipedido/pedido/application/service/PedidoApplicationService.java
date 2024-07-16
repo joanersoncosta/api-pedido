@@ -26,6 +26,6 @@ public class PedidoApplicationService implements PedidoService {
 		PedidoRequest pedido = new PedidoRequest(pedidoRequest, produto);
 		publicador.enviarMensagem(pedido);
 		log.debug("[finish] PedidoApplicationService - enfileiraPedido");
-		return new PedidoResponse(pedido);
+		return new PedidoResponse(pedido, produto);
 	}
 }

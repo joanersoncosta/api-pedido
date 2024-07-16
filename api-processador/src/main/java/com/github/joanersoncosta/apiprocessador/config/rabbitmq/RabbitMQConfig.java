@@ -4,6 +4,7 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.QueueBuilder;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -23,8 +24,14 @@ public class RabbitMQConfig {
 
 	@Value("${rabbitmq.exchange.name}")
 	private String exchangeName;
+	@Value("${rabbitmq.exchange.notificacao}")
+	private String exchangeNotificacao;
 	@Value("${rabbitmq.queue.name}")
 	private String queueName;
+	@Value("${spring.rabbitmq.listener.simple.dead-letter-exchange}")
+	private String deadLetterExchange;
+	@Value("${spring.rabbitmq.listener.simple.dead-letter-routing-key}")
+	private String deadLetterRoutingKey;
 	
 	@Bean
 	public FanoutExchange pedidosExchange() {
@@ -32,8 +39,18 @@ public class RabbitMQConfig {
 	}
 	
 	@Bean
+	public FanoutExchange notificacaoExchange() {
+		return new FanoutExchange(exchangeNotificacao);
+	}
+	
+	@Bean
 	public Queue processadorQueue() {
-		return new Queue(queueName);
+	       return QueueBuilder.durable(queueName)
+	    		    .maxLength(2)
+	           		.deadLetterExchange(deadLetterExchange)
+	        		.withArgument("x-message-ttl", 10000)
+	           		.deadLetterRoutingKey(deadLetterRoutingKey)
+	                .build();
 	}
 	
 	@Bean

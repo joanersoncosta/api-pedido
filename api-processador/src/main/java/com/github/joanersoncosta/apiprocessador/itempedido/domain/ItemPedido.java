@@ -1,5 +1,6 @@
 package com.github.joanersoncosta.apiprocessador.itempedido.domain;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 import com.github.joanersoncosta.apiprocessador.pedido.domain.Pedido;
@@ -30,20 +31,22 @@ public class ItemPedido {
 	@Column(columnDefinition = "uuid", updatable = false, unique = true, nullable = false)
 	private UUID idItemPedido;
 	@ManyToOne
-	@JoinColumn(name = "id_Produto")
+	@JoinColumn(name = "id_produto")
 	private Produto produto;
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_Pedido")
+	@JoinColumn(name = "id_pedido")
 	private Pedido pedido;
+	private BigDecimal preco;
 	private Integer quantidade;
 	
-	public ItemPedido(PedidoRequest pedidoRequest, Pedido pedido) {
-		this.produto = pedidoRequest.getProduto();
+	public ItemPedido(PedidoRequest pedidoRequest, Pedido pedido, Produto produto) {
+		this.produto = produto;
 		this.pedido = pedido;
+		this.preco = produto.getPreco();
 		this.quantidade = pedidoRequest.getQuantidade();
 	}
 	
-	public double getSubTotal() {
-		return produto.getValor() * quantidade;
+	public BigDecimal getSubTotal() {
+		return preco.multiply(BigDecimal.valueOf(quantidade));
 	}
 }

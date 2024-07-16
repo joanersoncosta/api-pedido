@@ -1,6 +1,7 @@
 package com.github.joanersoncosta.apiprocessador.pedido.domain;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,7 @@ public class Pedido {
 		this.emailNotificacao = pedidoRequest.getEmailNotificacao();
 		this.itens = new ArrayList<>();
 		this.status = pedidoRequest.getStatus();
-		this.total = BigDecimal.ZERO;
+		this.total = getTotalValor();
 		this.dataHora = pedidoRequest.getDataHora();
 	}
 
@@ -74,10 +75,11 @@ public class Pedido {
 		return this.status = StatusPedido.PROCESSADO;
 	}
 
-	public Double getTotalValor() {
-		Double total = itens.stream()
+	public BigDecimal getTotalValor() {
+		BigDecimal total = itens.stream()
 				.map(item -> item.getSubTotal())
-				.reduce(0.0, (subtotal1, subtotal2) -> subtotal1 + subtotal2);
+				.reduce(BigDecimal.ZERO, BigDecimal::add);
+		total = total.setScale(2, RoundingMode.HALF_UP);
 		return total;
 	}
 }

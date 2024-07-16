@@ -16,16 +16,16 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class PedidoListener {
 	private final PedidoService pedidoService;
-	
+
 	@RabbitListener(queues = "pedidos.v1.pedido-criado.gerar-processamento")
-	private void salvarPedido(PedidoRequest pedido) throws InterruptedException {
-		Thread.sleep(10000);
-        log.info("Pedido Recebido: {}", pedido.toString());
-	       try {
-	    		pedidoService.atualizaPedido(pedido);
-	        } catch (Exception e) {
-	            log.error("Erro ao processar a mensagem: {}", e.getMessage(), e);
-	            throw APIException.build(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao processar a mensagem", e);
-	        }
+	public void salvarPedido(PedidoRequest pedido) throws InterruptedException {
+		Thread.sleep(5000);		
+		log.info("Pedido Recebido: {}", pedido.toString());
+	    try {
+	        pedidoService.atualizaPedido(pedido);
+	    } catch (Exception e) {
+	        log.error("Erro ao processar a mensagem: {}", e.getMessage(), e);
+	        throw APIException.build(HttpStatus.BAD_REQUEST, "Erro ao processar a mensagem."); // Não reenvia a mensagem para a fila
+	    }
 	}
 }

@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.joanersoncosta.apiprocessador.pedido.domain.enuns.StatusPedido;
-import com.github.joanersoncosta.apiprocessador.produto.domain.Produto;
 
 import lombok.Getter;
 import lombok.ToString;
@@ -18,7 +17,7 @@ public class PedidoRequest {
 	
 	private UUID idPedido;
 	private String emailNotificacao;
-	private Produto produto;
+	private UUID idProduto;
 	private Integer quantidade;
 	private StatusPedido status;
 	
@@ -28,13 +27,13 @@ public class PedidoRequest {
 	@JsonCreator
 	public PedidoRequest(@JsonProperty("idPedido") UUID idPedido,
 	                     @JsonProperty("emailNotificacao") String emailNotificacao,
-	                     @JsonProperty("produto") Produto produto,
+	                     @JsonProperty("idProduto") UUID idProduto,
 	                     @JsonProperty("quantidade") Integer quantidade,
 	                     @JsonProperty("status") StatusPedido status,
 	                     @JsonProperty("dataHora") LocalDateTime dataHora) {
 		this.idPedido = idPedido;
 		this.emailNotificacao = emailNotificacao;
-		this.produto = produto;
+		this.idProduto = idProduto;
 		this.quantidade = quantidade;
 		this.status = status;
 		this.dataHora = dataHora;

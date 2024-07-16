@@ -1,5 +1,6 @@
 package com.github.joanersoncosta.apiprocessador.produto.domain;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -24,6 +25,6 @@ public class Produto {
 	@Column(columnDefinition = "uuid", updatable = false, unique = true, nullable = false)
 	private UUID idProduto;
 	private String nome;
-	private Double valor;
+	private BigDecimal preco;
 	
 }

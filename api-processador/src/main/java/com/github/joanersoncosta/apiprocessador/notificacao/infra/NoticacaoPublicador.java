@@ -1,5 +1,7 @@
 package com.github.joanersoncosta.apiprocessador.notificacao.infra;
 
+import com.github.joanersoncosta.apiprocessador.pedido.domain.PedidoNotificacaoRequest;
+
 public interface NoticacaoPublicador {
-	void enviarMensagem(String mensgaem);
+	void enviarMensagem(PedidoNotificacaoRequest pedidoRequest);
 }

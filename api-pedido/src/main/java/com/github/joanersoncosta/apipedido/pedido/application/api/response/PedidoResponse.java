@@ -20,9 +20,9 @@ public class PedidoResponse {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime dataHora;
 	
-	public PedidoResponse(PedidoRequest pedido) {
+	public PedidoResponse(PedidoRequest pedido, Produto produto) {
 		this.emailNotificacao = pedido.getEmailNotificacao();
-		this.produto = pedido.getProduto();
+		this.produto = produto;
 		this.quantidade = pedido.getQuantidade();
 		this.status = pedido.getStatus();
 		this.dataHora = pedido.getDataHora();
