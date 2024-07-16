@@ -23,7 +23,7 @@ public class RabbitMQConfig {
 
 	@Value("${rabbit.exchange.name}")
 	private String exchangeName;
-	@Value("${rabbit.queue.name}")
+	@Value("${rabbit.queues.name}")
 	private String queueName;
 	
 	@Bean

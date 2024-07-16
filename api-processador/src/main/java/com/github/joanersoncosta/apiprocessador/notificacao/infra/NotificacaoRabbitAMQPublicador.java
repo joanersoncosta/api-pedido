@@ -20,7 +20,7 @@ public class NotificacaoRabbitAMQPublicador implements NoticacaoPublicador{
 	@Override
 	public void enviarMensagem(PedidoNotificacaoRequest pedidoRequest) {
 		log.debug("[start] NotificacaoRabbitAMQPublicador - enviarMensagem");
-		rabbitTemplate.convertAndSend(exchangeName, pedidoRequest);
+		rabbitTemplate.convertAndSend(exchangeName, "", pedidoRequest);
 		log.debug("[finish] NotificacaoRabbitAMQPublicador - enviarMensagem");
 	}
 }

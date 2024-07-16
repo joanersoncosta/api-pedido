@@ -26,7 +26,7 @@ spring:
       requires: false
 
 #RABBITMQ COSTOM CONFIG
-rabbitmq:
+rabbit:
  exchange:
   name: pedidos.v1.pedido-notificacao
  queues:

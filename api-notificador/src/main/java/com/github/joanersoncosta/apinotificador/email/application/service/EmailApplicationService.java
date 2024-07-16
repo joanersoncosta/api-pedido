@@ -32,7 +32,7 @@ public class EmailApplicationService implements EmailService{
 		String idPedido = String.valueOf(pedidoRequest.getIdPedido());
 		String valor = String.valueOf(pedidoRequest.getTotal());
 		String status = pedidoRequest.getStatus();
-		String mensage = String.format("Olá, seu pedido de nº %s no valor de $R %s, foi processado com sucesso./nStatus: %s", idPedido, valor, status);
+		String mensage = String.format("Olá, seu pedido de nº %s no valor de $R %s, foi processado com sucesso.Status: %s", idPedido, valor, status);
 		log.debug("[finish] EmailApplicationService - gerarMensagemPedido");
 		return mensage;
 	}
