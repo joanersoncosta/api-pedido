@@ -1,0 +1,33 @@
+server:
+ port: 8080
+ 
+logging:
+ level:
+  com.github.joanersoncosta.apinotificador: ${LOG_LEVEL:DEBUG}
+  
+spring:
+ application:
+  name: notificador
+ rabbitmq:
+    host: localhost
+    port: 5672
+    username: user
+    password: user
+    
+ mail:
+  host: localhost
+  port: 1025
+  properties:
+   mail:
+    sntp:
+     aut: false
+     starttls:
+      enable: false
+      requires: false
+
+#RABBITMQ COSTOM CONFIG
+rabbit:
+ exchange:
+  name: pedidos.v1.pedido-notificacao
+ queues:
+  name: pedidos.v1.pedido-criado.gerar-notificacao

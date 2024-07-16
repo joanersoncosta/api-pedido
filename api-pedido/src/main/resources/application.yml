@@ -1,16 +1,43 @@
+server:
+ servlet:
+  context-path: /api
+ port: 8080
+logging:
+ level:
+  com.github.joanersoncosta.apipedido: ${LOG_LEVEL:DEBUG} 
+
 spring:
  application:
   name: api-pedido
  rabbitmq:
     host: localhost
     port: 5672
-    username: rabbitmq
-    password: rabbitmq
+    username: user
+    password: user
 
+ datasource:
+  url: jdbc:postgresql://localhost:5432/pedidos_api
+  driver-class-name: org.postgresql.Driver
+  username: postgres
+  password: admin
+
+ jpa:
+  show-sql: false
+  hibernate: 
+   ddl-auto: update
+  properties:
+    hibernate:
+      dialect: org.hibernate.dialect.PostgreSQLDialect 
+   
 #SPRINGDOC OPENAPI
 springdoc:
  swagger-ui:
   path: /api-docs.html
  api-docs:
   path: /api-docs
- packagesToScan: com.github.joanersoncosta.pedidos.api.pedido.application.api
+ packagesToScan: com.github.joanersoncosta.apipedido.pedido.application.api
+ 
+#RABBITMQ COSTOM CONFIG
+rabbitmq:
+ exchange:
+  name: pedidos.v1.pedido-criado
